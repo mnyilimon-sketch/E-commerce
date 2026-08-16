@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<link rel="stylesheet"
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+
+<link rel="stylesheet" href="styles.css">
+
+<title>E-SHOP - Vendre et Acheter</title>
+
+
+<a href="publier.html"
+id="add-product-link"
+title="Publier un produit"
+aria-label="Publier un produit"> <i id="add-icon" class='bx bx-plus-circle'></i> </a>
+
+
+
+<style>
+
+    
+    /* =====================================================
+       MARKETPLACE
+    ===================================================== */
+body {
+        background: #f7f7f7;
+        display: none;
+    }
+
+    /* NAVBAR */
+    .market-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 6%;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        z-index: 1000;
+    }
+
+    .market-logo {
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: #222;
+        text-decoration: none;
+    }
+
+    .market-logo span {
+        color: #ff4d00;
+    }
+
+    .market-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .cart-button {
+        border: none;
+        background: #ff4d00;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .cart-button i {
+        font-size: 1.2rem;
+        vertical-align: middle;
+    }
+
+    #cart-count {
+        background: white;
+        color: #ff4d00;
+        border-radius: 50%;
+        padding: 2px 7px;
+        margin-left: 5px;
+    }
+
+    /* HERO */
+    .market-hero {
+        margin-top: 70px;
+        min-height: 420px;
+        padding: 60px 6%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+        background: linear-gradient(135deg, #fff1e8, #ffffff);
+    }
+
+    .hero-text {
+        max-width: 520px;
+    }
+
+    .hero-text small {
+        color: #ff4d00;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .hero-text h1 {
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.05;
+        margin: 15px 0;
+    }
+
+    .hero-text h1 span {
+        color: #ff4d00;
+    }
+
+    .hero-text p {
+        color: #666;
+        line-height: 1.7;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    .hero-buttons a,
+    .hero-buttons button {
+        padding: 13px 22px;
+        border-radius: 25px;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        font-weight: 600;
+    }
+
+    .sell-btn {
+        background: #ff4d00;
+        color: white;
+    }
+
+    .shop-btn {
+        background: white;
+        color: #222;
+        border: 1px solid #ddd !important;
+    }
+
+    /* HERO IMAGES */
+  .hero-images {
+    width: 48%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.hero-images img {
+    height: 140px;
+}
+
+    .hero-images img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+
+    .hero-images img:nth-child(2) {
+        transform: translateY(30px);
+    }
+
+/* GALERIE */
+    .gallery-section {
+        padding: 20px 6% 50px;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+    }
+
+    .gallery-grid img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    .gallery-grid img:hover {
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 900px) {
+        .gallery-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+    @media (max-width: 500px) {
+        .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .gallery-grid img {
+            height: 110px;
+        }
+    }
+
+    /* CATEGORIES */
+    .categories {
+        padding: 45px 6% 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .category-list {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .category {
+        background: white;
+        padding: 15px 22px;
+        border-radius: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.07);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .category:hover {
+        background: #ff4d00;
+        color: white;
+        transform: translateY(-3px);
+    }
+
+    /* PUBLICATION */
+    .publish-section {
+        padding: 50px 6%;
+    }
+
+    .publish-container {
+        max-width: 650px;
+        margin: auto;
+        background: white;
+        padding: 35px;
+        border-radius: 20px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    }
+
+    .publish-container h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .publish-container .subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 25px;
+    }
+
+    .publish-form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .publish-form input,
+    .publish-form select {
+        width: 100%;
+        height: 48px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 0 15px;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+
+    .publish-form input:focus,
+    .publish-form select:focus {
+        outline: none;
+        border-color: #ff4d00;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: 220px;
+        border: 2px dashed #ddd;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        color: #999;
+    }
+
+    .image-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    }
+
+    .publish-button {
+        height: 50px;
+        border: none;
+        border-radius: 10px;
+        background: #ff4d00;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .publish-button:hover {
+        background: #e64300;
+    }
+
+    #publish-status {
+        text-align: center;
+        margin-top: 10px;
+        min-height: 20px;
+    }
+
+    /* SEARCH */
+    .products-section {
+        padding: 50px 6%;
+    }
+
+    .search-box {
+        max-width: 600px;
+        margin: 0 auto 40px;
+        position: relative;
+    }
+
+    .search-box input {
+        width: 100%;
+        height: 52px;
+        border-radius: 30px;
+        border: 1px solid #ddd;
+        padding: 0 55px 0 20px;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
+
+    .search-box i {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 1.4rem;
+        color: #777;
+    }
+
+    /* PRODUCTS */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 25px;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 7px 25px rgba(0,0,0,0.07);
+        transition: 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 230px;
+        object-fit: cover;
+    }
+
+    .product-info {
+        padding: 18px;
+    }
+
+    .product-info h3 {
+        margin: 0 0 8px;
+        font-size: 1.05rem;
+    }
+
+    .stars {
+        color: #ffb400;
+        margin-bottom: 8px;
+    }
+
+    .product-price {
+        font-size: 1.15rem;
+        font-weight: 800;
+        color: #ff4d00;
+        margin-bottom: 15px;
+    }
+
+    .product-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .product-buttons button {
+        flex: 1;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .buy-button {
+        border: none;
+        background: #ff4d00;
+        color: white;
+    }
+
+    .cart-product-button {
+        background: white;
+        border: 1px solid #ff4d00;
+        color: #ff4d00;
+    }
+
+    /* BADGE */
+    .new-badge {
+        position: absolute;
+        margin: 12px;
+        background: #ff4d00;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .product-image-container {
+        position: relative;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 800px) {
+
+        .market-hero {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .hero-images {
+            width: 100%;
+        }
+
+        .hero-text {
+            max-width: 100%;
+        }
+
+        .hero-buttons {
+            justify-content: center;
+        }
+
+        .market-nav {
+            padding: 0 4%;
+        }
+    }
+
+    @media (max-width: 500px) {
+
+        .hero-images {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-images img {
+            height: 200px;
+        }
+
+        .publish-container {
+            padding: 22px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+<script>
+    if (!localStorage.getItem('token')) {
+        window.location.replace('index.html');
+    } else {
+        document.body.style.display = 'block';
+    }
+</script>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="market-nav">
+
+
+<a href="index.html" class="market-logo">
+    E-<span>SHOP</span>
+</a>
+<div class="market-nav-right">
+
+    <span id="publisher-status" style="font-size:0.85rem; color:#555;"></span>
+
+    <a href="Shop.html">
+        Accueil
+    </a>
+
+    <button class="cart-button" onclick="showCart()">
+        <i class='bx bx-cart'></i>
+        Panier
+        <span id="cart-count">0</span>
+    </button>
+
+</div>
+
+</nav>
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="market-hero">
+
+
+<div class="hero-text">
+
+    <small>Bienvenue sur E-SHOP</small>
+
+    <h1>
+        Vendez vos produits.
+        <span>Achetez facilement.</span>
+    </h1>
+
+    <p>
+        Une marketplace simple et moderne pour publier vos produits,
+        découvrir de nouvelles offres et acheter directement en ligne.
+    </p>
+
+    <div class="hero-buttons">
+
+        <a href="#publier" class="sell-btn">
+            <i class='bx bx-store'></i>
+            Vendre un produit
+        </a>
+
+        <a href="#produits" class="shop-btn">
+            <i class='bx bx-shopping-bag'></i>
+            Voir les produits
+        </a>
+
+    </div>
+
+</div>
+
+<div class="hero-images">
+
+    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=700&q=80">
+
+    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80">
+
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80">
+
+    <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80">
+
+    <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=700&q=80">
+
+    <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80">
+
+</div>
+
+
+</section>
+
+<!-- =====================================================
+     CATEGORIES
+===================================================== -->
+
+<section class="categories">
+
+
+<div class="section-title">
+    <h2>Découvrez nos catégories</h2>
+    <p>Tout ce dont vous avez besoin au même endroit.</p>
+</div>
+
+<div class="category-list">
+
+    <div class="category" onclick="filterCategory('all')">
+        🛍️ Tout
+    </div>
+
+    <div class="category" onclick="filterCategory('mode')">
+        👕 Mode
+    </div>
+
+    <div class="category" onclick="filterCategory('electronique')">
+        📱 Électronique
+    </div>
+
+    <div class="category" onclick="filterCategory('chaussures')">
+        👟 Chaussures
+    </div>
+
+    <div class="category" onclick="filterCategory('accessoires')">
+        👜 Accessoires
+    </div>
+
+    <div class="category" onclick="filterCategory('maison')">
+        🏠 Maison
+    </div>
+
+</div>
+
+
+</section>
+
+<!-- =====================================================
+     GALERIE INSPIRATION
+===================================================== -->
+
+<section class="gallery-section">
+
+    <div class="section-title">
+        <h2>Galerie</h2>
+        <p>De l'inspiration pour vos prochains achats et publications.</p>
+    </div>
+
+    <div class="gallery-grid">
+        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?auto=format&fit=crop&w=500&q=80">
+        <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=500&q=80">
+    </div>
+
+</section>
+
+<!-- =====================================================
+     PUBLICATION
+===================================================== -->
+
+<section class="publish-section" id="publier">
+
+
+<div class="publish-container">
+
+    <h2>
+        <i class='bx bx-store'></i>
+        Publier un produit
+    </h2>
+
+    <p class="subtitle">
+        Vous souhaitez vendre ? Ajoutez votre produit gratuitement.
+    </p>
+
+    <form class="publish-form" id="publish-form">
+
+        <input
+            type="text"
+            id="pub-name"
+            placeholder="Nom du produit"
+            required
+        >
+
+        <input
+            type="number"
+            id="pub-price"
+            placeholder="Prix en FCFA"
+            min="0"
+            required
+        >
+
+        <select id="pub-category" required>
+
+            <option value="">
+                Choisir une catégorie
+            </option>
+
+            <option value="mode">
+                Mode
+            </option>
+
+            <option value="electronique">
+                Électronique
+            </option>
+
+            <option value="chaussures">
+                Chaussures
+            </option>
+
+            <option value="accessoires">
+                Accessoires
+            </option>
+
+            <option value="maison">
+                Maison
+            </option>
+
+        </select>
+<select id="pub-stars">
+            <option value="5">⭐⭐⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+        </select>
+
+        <input
+            type="file"
+            id="pub-img"
+            accept="image/*"
+            required
+        >
+
+        <div class="image-preview">
+
+            <span id="preview-text">
+                Aperçu de votre image
+            </span>
+
+            <img id="preview-image">
+
+        </div>
+
+        <button
+            type="submit"
+            class="publish-button"
+        >
+            <i class='bx bx-cloud-upload'></i>
+            Publier le produit
+        </button>
+
+    </form>
+
+    <p id="publish-status"></p>
+
+</div>
+
+
+</section>
+
+<!-- =====================================================
+     PRODUITS
+===================================================== -->
+
+<section class="products-section" id="produits">
+
+
+<div class="section-title">
+
+    <h2>
+        🛍️ Produits disponibles
+    </h2>
+
+    <p>
+        Découvrez les produits publiés par nos vendeurs.
+    </p>
+
+</div>
+
+
+<div class="search-box">
+
+    <input
+        type="text"
+        id="search-product"
+        placeholder="Rechercher un produit..."
+    >
+
+    <i class='bx bx-search'></i>
+
+</div>
+
+
+<div
+    class="products-grid"
+    id="products-grid">
+</div>
+
+
+</section>
+
+
+<!-- =====================================================
+     VRAIS PRODUITS PUBLIÉS
+===================================================== -->
+
+<section class="products-section" id="vrais-produits">
+
+    <div class="section-title">
+        <h2>🆕 Produits publiés par nos vendeurs</h2>
+        <p>Les articles ajoutés par la communauté E-SHOP.</p>
+    </div>
+
+    <div
+        class="products-grid"
+        id="real-products-grid">
+    </div>
+
+</section>
+
+<script>
+
+/* =====================================================
+       VERIFICATION DE CONNEXION
+    ===================================================== */
+
+document.body.style.display = 'block';
+
+    
+    /* =====================================================
+       PRODUITS D'EXEMPLE
+    ===================================================== */
+
+    let products = [
+
+        {
+            id: 1,
+            name: "Montre élégante",
+            price: 25000,
+            category: "accessoires",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 2,
+            name: "Chaussures Nike",
+            price: 45000,
+            category: "chaussures",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 3,
+            name: "Sac à main",
+            price: 18000,
+            category: "accessoires",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 4,
+            name: "Smartphone",
+            price: 150000,
+            category: "electronique",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 5,
+            name: "Casque Bluetooth",
+            price: 35000,
+            category: "electronique",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 6,
+            name: "T-shirt moderne",
+            price: 12000,
+            category: "mode",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 7,
+            name: "Lunettes de soleil",
+            price: 15000,
+            category: "accessoires",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 8,
+            name: "Chaussures sport",
+            price: 30000,
+            category: "chaussures",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 9,
+            name: "Décoration maison",
+            price: 22000,
+            category: "maison",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 10,
+            name: "Ordinateur portable",
+            price: 350000,
+            category: "electronique",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 11,
+            name: "Robe d'ete",
+            price: 16000,
+            category: "mode",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 12,
+            name: "Enceinte connectee",
+            price: 28000,
+            category: "electronique",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 13,
+            name: "Baskets casual",
+            price: 27000,
+            category: "chaussures",
+            stars: 5,
+            image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 14,
+            name: "Ceinture en cuir",
+            price: 9000,
+            category: "accessoires",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80"
+        },
+
+        {
+            id: 15,
+            name: "Coussin decoratif",
+            price: 8000,
+            category: "maison",
+            stars: 4,
+            image: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=700&q=80"
+        }
+];
+
+    // Marque les produits fictifs pour les distinguer des vrais
+    products.forEach(p => p.isReal = false);
+
+
+    /* =====================================================
+       PRODUITS PUBLIÉS LOCALEMENT (démo)
+    ===================================================== */
+
+    const savedProducts =
+        JSON.parse(localStorage.getItem("eshopProducts")) || [];
+
+    savedProducts.forEach(p => p.isReal = false);
+
+    products = [...savedProducts, ...products];
+
+
+   /* =====================================================
+       VRAIS PRODUITS (API) — liste séparée
+    ===================================================== */
+
+    const API_URL = 'http://localhost:5000/api/products';
+
+    let realProducts = [];
+
+    async function loadRealProducts() {
+
+        const grid = document.getElementById('real-products-grid');
+        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;">Chargement...</p>';
+
+        try {
+
+            const response = await fetch(API_URL);
+
+            if (!response.ok) {
+                throw new Error('Erreur reseau');
+            }
+
+            realProducts = await response.json();
+
+            realProducts.forEach(p => p.isReal = true);
+
+            displayProducts(realProducts, 'real-products-grid');
+
+        } catch (error) {
+
+            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;">Impossible de charger les produits publies.</p>';
+        }
+    }
+    /* =====================================================
+       AFFICHER LES PRODUITS
+    ===================================================== */
+
+  function displayProducts(list, gridId) {
+
+        const grid =
+            document.getElementById(gridId);
+
+        if (!grid) return;
+
+        grid.innerHTML = "";
+
+        if (list.length === 0) {
+
+            grid.innerHTML = `
+                <p style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    padding:40px;
+                ">
+                    Aucun produit trouvé.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        list.forEach(product => {
+
+            const stars =
+                "⭐".repeat(product.stars);
+
+            const card = document.createElement("div");
+
+            card.className = "product-card";
+
+            card.innerHTML = `
+
+                <div class="product-image-container">
+
+                    <span class="new-badge">
+                        Disponible
+                    </span>
+
+                    <img
+                        class="product-image"
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+                </div>
+
+                <div class="product-info">
+
+                    <h3>
+                        ${product.name}
+                    </h3>
+
+                    <div class="stars">
+                        ${stars}
+                    </div>
+
+                    <div class="product-price">
+                        ${Number(product.price).toLocaleString("fr-FR")}
+                        FCFA
+                    </div>
+
+                    <div class="product-buttons">
+
+                        <button
+                            class="cart-product-button"
+                            onclick="addToCart(${product.id})"
+                        >
+                            <i class='bx bx-cart-add'></i>
+                            Panier
+                        </button>
+
+                        <button
+                            class="buy-button"
+                            onclick="buyProduct(${product.id})"
+                        >
+                            Acheter
+                        </button>
+
+                    </div>
+
+                </div>
+            `;
+
+            grid.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       PANIER
+    ===================================================== */
+
+    // Panier démo (produits fictifs, stocké localement)
+    let demoCart =
+        JSON.parse(localStorage.getItem("eshopCart")) || [];
+
+    // Panier réel (partagé avec Shop.html)
+    function getRealCart() {
+        try {
+            return JSON.parse(localStorage.getItem('eshop-cart')) || [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function saveRealCart(cart) {
+        localStorage.setItem('eshop-cart', JSON.stringify(cart));
+    }
+
+    function updateCartCount() {
+        const realCart = getRealCart();
+        const realQty = realCart.reduce((sum, item) => sum + item.qty, 0);
+        document.getElementById("cart-count").textContent =
+            demoCart.length + realQty;
+    }
+function addToCart(id) {
+
+        const product = products.find(p => p.id === id) || realProducts.find(p => p.id === id);
+        if (!product) return;
+
+        if (product.isReal) {
+
+            // Vrai produit : ajout au panier partagé avec Shop.html
+            const cart = getRealCart();
+            const existing = cart.find(item => item.productId === product.id);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    name: product.name,
+                    price: Number(product.price),
+                    img: product.image,
+                    qty: 1,
+                    productId: product.id,
+                });
+            }
+
+            saveRealCart(cart);
+
+        } else {
+
+            // Produit démo : ancien comportement local
+            demoCart.push(product);
+            localStorage.setItem("eshopCart", JSON.stringify(demoCart));
+        }
+
+        updateCartCount();
+
+        alert(product.name + " a été ajouté au panier 🛒");
+    }
+/* =====================================================
+       ACHETER
+    ===================================================== */
+
+    function buyProduct(id) {
+
+        const product = products.find(p => p.id === id) || realProducts.find(p => p.id === id);
+        if (!product) return;
+
+        if (product.isReal) {
+
+            addToCart(id);
+            window.location.href = 'Shop.html#cart';
+
+        } else {
+
+            const confirmation = confirm(
+                "Voulez-vous acheter " +
+                product.name +
+                " pour " +
+                Number(product.price).toLocaleString("fr-FR") +
+                " FCFA ?"
+            );
+
+            if (confirmation) {
+                alert(
+                    "Produit sélectionné ! 🛍️\n\n" +
+                    product.name +
+                    "\nPrix : " +
+                    Number(product.price).toLocaleString("fr-FR") +
+                    " FCFA"
+                );
+            }
+        }
+    }
+
+
+    /* =====================================================
+       AFFICHER PANIER
+    ===================================================== */
+
+    function showCart() {
+
+        if (cart.length === 0) {
+
+            alert("Votre panier est vide 🛒");
+
+            return;
+        }
+
+
+        let message =
+            "🛒 VOTRE PANIER\n\n";
+
+        let total = 0;
+
+
+        cart.forEach((product, index) => {
+
+            message +=
+                (index + 1) +
+                ". " +
+                product.name +
+                " - " +
+                Number(product.price)
+                    .toLocaleString("fr-FR") +
+                " FCFA\n";
+
+            total += Number(product.price);
+
+        });
+
+
+        message +=
+            "\nTOTAL : " +
+            total.toLocaleString("fr-FR") +
+            " FCFA";
+
+
+        alert(message);
+
+    }
+
+
+    /* =====================================================
+       RECHERCHE
+    ===================================================== */
+
+ document
+        .getElementById("search-product")
+        .addEventListener("input", function() {
+
+            const search =
+                this.value.toLowerCase().trim();
+
+            const filtered =
+                products.filter(product =>
+                    product.name
+                        .toLowerCase()
+                        .includes(search)
+                );
+
+            displayProducts(filtered, "products-grid");
+
+        });
+
+
+    /* =====================================================
+       FILTRE CATEGORIES
+    ===================================================== */
+
+   function filterCategory(category) {
+
+        if (category === "all") {
+
+            displayProducts(products, "products-grid");
+
+            return;
+        }
+
+        const filtered =
+            products.filter(product =>
+                product.category === category
+            );
+
+        displayProducts(filtered, "products-grid");
+
+    }
+
+
+    /* =====================================================
+       APERCU IMAGE
+    ===================================================== */
+
+    document
+        .getElementById("pub-img")
+        .addEventListener("change", function() {
+
+            const file = this.files[0];
+
+            if (!file) return;
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+
+                const preview =
+                    document.getElementById(
+                        "preview-image"
+                    );
+
+                preview.src =
+                    event.target.result;
+
+                preview.style.display =
+                    "block";
+
+                document.getElementById(
+                    "preview-text"
+                ).style.display = "none";
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+/* =====================================================
+       PUBLICATION PRODUIT (API réelle)
+    ===================================================== */
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    document.getElementById('publish-form').addEventListener('submit', async function (event) {
+
+        event.preventDefault();
+
+        const statusEl = document.getElementById('publish-status');
+        statusEl.style.color = 'red';
+        statusEl.textContent = '';
+
+        const name = document.getElementById('pub-name').value.trim();
+        const price = document.getElementById('pub-price').value;
+        const stars = Number(document.getElementById('pub-stars').value);
+        const file = document.getElementById('pub-img').files[0];
+
+        if (!file) {
+            alert('Veuillez selectionner une image.');
+            return;
+        }
+
+        const submitBtn = event.target.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+
+        try {
+
+            const imageBase64 = await fileToBase64(file);
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: name,
+                    price: parseFloat(price),
+                    image: imageBase64,
+                    stars: stars,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Erreur lors de la publication.');
+            }
+
+            statusEl.style.color = 'green';
+            statusEl.innerHTML = '✅ Produit publie avec succes !';
+
+            document.getElementById('publish-form').reset();
+            document.getElementById('preview-image').style.display = 'none';
+            document.getElementById('preview-text').style.display = 'block';
+
+            await loadRealProducts();
+
+            document.getElementById('produits').scrollIntoView({ behavior: 'smooth' });
+
+        } catch (error) {
+
+            statusEl.textContent = error.message;
+
+        } finally {
+
+            submitBtn.disabled = false;
+        }
+    });
+
+    
+/* =====================================================
+       STATUT DE CONNEXION
+    ===================================================== */
+
+    function showConnectionStatus() {
+        const raw = localStorage.getItem('user');
+        const statusEl = document.getElementById('publisher-status');
+
+        if (raw) {
+            try {
+                const user = JSON.parse(raw);
+                statusEl.textContent = 'Connecte : ' + user.name;
+            } catch (e) {
+                statusEl.textContent = '';
+            }
+        } else {
+            statusEl.textContent = 'Non connecte';
+        }
+    }
+
+    
+
+   /* =====================================================
+       STATUT DE CONNEXION
+    ===================================================== */
+
+    function showConnectionStatus() {
+        const raw = localStorage.getItem('user');
+        const statusEl = document.getElementById('publisher-status');
+
+        if (raw) {
+            try {
+                const user = JSON.parse(raw);
+                statusEl.textContent = 'Connecte : ' + user.name;
+            } catch (e) {
+                statusEl.textContent = '';
+            }
+        } else {
+            statusEl.textContent = 'Non connecte';
+        }
+    }
+
+   /* =====================================================
+       INITIALISATION
+    ===================================================== */
+
+    displayProducts(products, "products-grid");
+
+    updateCartCount();
+
+    showConnectionStatus();
+
+    loadRealProducts();
+</script>
+
+</body>
+</html>

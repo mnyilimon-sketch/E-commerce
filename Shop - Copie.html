@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<script>
+        if (!localStorage.getItem('token')) {
+            window.location.replace('index.html');
+        } else {
+            document.documentElement.style.visibility = 'visible';
+        }
+    </script>
+    <style>
+        html { visibility: hidden; }
+    </style>
+ <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="styles.css">
+    <title>Shopping</title>
+</head>
+<body>
+
+    <!--###################################-->
+    <!--Navigation-->
+    <!--###################################-->
+
+    <nav>
+       <a href="index.html" class="logo">E-<span>SHOP</span></a>
+      <ul class="navigation">
+    <li><a href="#home" class="active" data-i18n="nav_home">Accueil</a></li>
+    <li><a href="#promo" data-i18n="nav_promo">Promos</a></li>
+    <li><a href="#News" data-i18n="nav_news">Nouveautés</a></li>
+    <li><a href="#products" data-i18n="nav_products">Produits</a></li>
+    <li><a href="#reviews" data-i18n="nav_reviews">Avis</a></li>
+    <li><a href="#about" data-i18n="nav_about">À propos</a></li>
+    <li><a href="#shipping" data-i18n="nav_shipping">Livraison</a></li>
+    <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
+   <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    <li class="lang-switch" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee; list-style:none;">
+        <button type="button" class="lang-btn active" data-lang="fr">FR</button>
+        <span>/</span>
+        <button type="button" class="lang-btn" data-lang="en">EN</button>
+    </li>
+</ul>
+   <div class="navigation-icons">
+    <i id="search-icon"class='bx bx-search'></i>
+    <i id="cart-icon"class='bx bxs-cart'></i>
+    <i id="user-icon"class='bx bxs-user'></i><a href="publier.html" title="Publier un produit" onclick="return checkAuthBeforePublish()"><i id="add-icon" class='bx bx-plus-circle'></i></a>
+
+    <div class="admin-icons-group" style="display:none; position:relative;" id="admin-icons-group">
+        <i id="admin-bell-icon" class='bx bx-bell' style="position:relative;">
+            <span id="admin-bell-badge" style="display:none;"></span>
+        </i>
+        <i id="admin-stats-icon" class='bx bx-bar-chart-alt-2'></i>
+    </div>
+
+    <i id="burger-menu" class="bx bx-menu"></i>
+</div>
+
+        <!--##############Recherche####################-->
+
+        <div class="search-container">
+            <input type="search" placeholder="Que recherchez-vous?" data-i18n-placeholder="search_placeholder">
+        </div>
+        
+        <!--####Panier#########################-->
+<div class="cart-container">
+    <div class="cart-items">
+        <!-- Les articles du panier sont générés dynamiquement en JS -->
+    </div>
+    <h2 class="cart-total">Total: 0FCFA</h2>
+
+    <div id="checkout-box">
+        <input type="text" id="checkout-address" placeholder="Adresse de livraison">
+        <button type="button" id="checkout-btn" class="btn">Valider la commande</button>
+        <p id="checkout-status"></p>
+    </div>
+</div>
+
+        <!--####Ajouter un produit##################-->
+
+        <div class="add-container">
+            <h2 data-i18n="add_title">Ajouter un produit</h2>
+            <form id="add-product-form">
+                <input type="text" id="add-name" placeholder="Nom du produit" required data-i18n-placeholder="add_name_ph">
+                <input type="number" id="add-price" placeholder="Prix (FCFA)" min="0" required data-i18n-placeholder="add_price_ph">
+                <input type="file" id="add-img" accept="image/*" required>
+                <select id="add-stars" required>
+                    <option value="5" data-i18n="stars_5">5 étoiles</option>
+                    <option value="4" data-i18n="stars_4">4 étoiles</option>
+                    <option value="3" data-i18n="stars_3">3 étoiles</option>
+                    <option value="2" data-i18n="stars_2">2 étoiles</option>
+                    <option value="1" data-i18n="stars_1">1 étoile</option>
+                </select>
+                <input type="submit" value="Ajouter le produit" data-i18n-value="add_submit">
+            </form>
+        </div>
+
+            <!--####Compte##################-->
+
+ <div class="user-container">
+    <h2 id="auth-title">Connectez-vous</h2>
+    <form id="auth-form">
+        <input type="text" id="auth-name" placeholder="Nom complet" style="display:none;">
+        <input type="email" id="auth-email" placeholder="E-mail" required>
+        <input type="password" id="auth-password" placeholder="Mot de passe" required>
+        <input type="submit" id="auth-submit" value="Connexion">
+    </form>
+
+    <form id="forgot-form" style="display:none;">
+        <input type="email" id="forgot-email" placeholder="Votre e-mail" required>
+        <input type="submit" value="Envoyer le lien de reinitialisation">
+    </form>
+
+    <form id="reset-form" style="display:none;">
+        <input type="password" id="reset-password" placeholder="Nouveau mot de passe" required minlength="6">
+        <input type="submit" value="Reinitialiser le mot de passe">
+    </form>
+
+    <p id="auth-status" style="color:red;"></p>
+
+    <p id="auth-links">
+        <span id="auth-toggle-text">Pas de compte?</span> <a href="#" id="auth-toggle-link">Créer un compte!</a>
+        <br>
+        <a href="#" id="forgot-link">Mot de passe oublié?</a>
+    </p>
+
+    <p id="back-to-login" style="display:none;">
+        <a href="#" id="back-to-login-link">Retour a la connexion</a>
+    </p>
+
+    <p id="auth-logged-in" style="display:none;">
+        Connecté en tant que <span id="auth-user-name"></span>.
+        <a href="#" id="auth-logout-link">Se déconnecter</a>
+    </p>
+</div>
+        </nav>
+
+        <!--###################################-->
+    <!--home-->
+    <!--###################################-->
+
+    <section id="home" class="home">
+        <div class="home-content">
+            <span data-i18n="home_tag">E-commerce</span>
+            <h1 data-i18n="home_title">Tendance & Tranquilité</h1>
+            <p class="home-promo" data-i18n="home_promo">🔥 Jusqu'à -25% sur une sélection cette semaine seulement</p>
+            <div class="home-buttons">
+    <a href="#promo" class="btn btn-buy" data-i18n="home_buy">Acheter maintenant</a>
+    <a href="publier.html" class="btn btn-outline" onclick="return checkAuthBeforePublish()">Vendre un produit</a>
+</div>
+        </div>
+        <div class="home-img">
+            <img src="img.png/vetement0.jpg" alt="">
+        </div>
+    </section>
+
+
+    <!--###################################-->
+    <!--news-->
+    <!--###################################-->
+
+<section class="promo-" id="promo">
+    <div class="section-heading">
+        <h2 data-i18n="promo_title">Offres <span>du Moment</span></h2>
+    </div>
+    <div class="promo-container">
+
+        <div class="promo-box" data-name="Complet Signature" data-price="9000">
+            <span class="promo-badge">-25%</span>
+            <img src="./img.png/complet8.webp" alt="Complet Signature">
+            <div class="promo-content">
+                <h3 data-i18n="promo_item1">Complet Signature</h3>
+                <div class="promo-prices">
+                    <span class="promo-old">12000FCFA</span>
+                    <span class="promo-new">9000FCFA</span>
+                </div>
+                <a href="#" class="btn btn-buy promo-buy" data-i18n="home_buy">Acheter maintenant</a>
+            </div>
+        </div>
+
+        <div class="promo-box" data-name="Robe Prestige" data-price="7500">
+            <span class="promo-badge">-25%</span>
+            <img src="./img.png/vetement4.webp" alt="Robe Prestige">
+            <div class="promo-content">
+                <h3 data-i18n="promo_item2">Robe Prestige</h3>
+                <div class="promo-prices">
+                    <span class="promo-old">10000FCFA</span>
+                    <span class="promo-new">7500FCFA</span>
+                </div>
+                <a href="#" class="btn btn-buy promo-buy" data-i18n="home_buy">Acheter maintenant</a>
+            </div>
+        </div>
+
+        <div class="promo-box" data-name="Manche Longue Deluxe" data-price="3200">
+            <span class="promo-badge">-20%</span>
+            <img src="./img.png/complet9.webp" alt="Manche Longue Deluxe">
+            <div class="promo-content">
+                <h3 data-i18n="promo_item3">Manche Longue Deluxe</h3>
+                <div class="promo-prices">
+                    <span class="promo-old">4000FCFA</span>
+                    <span class="promo-new">3200FCFA</span>
+                </div>
+                <a href="#" class="btn btn-buy promo-buy" data-i18n="home_buy">Acheter maintenant</a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    <!--###################################-->
+    <!--news-->
+    <!--###################################-->
+
+<section class="news" id="News"> 
+    <div class="section-heading"> 
+        <h2 data-i18n="news_title">Nouvel <span>Arrivage</span></h2> 
+    </div>
+     <div class="news-cont swiper"> 
+        <div class="swiper-wrapper"> 
+            <div class="swiper-slide box" data-name="Complet Prestige" data-price="15000">
+                 <img src="./img.png/complet8.webp" alt="Complet Prestige"> <div class="content"> <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a> </div>
+            </div>
+
+            <div class="swiper-slide box" data-name="Complet Classe" data-price="13000">
+                <img src="./img.png/complet7.webp" alt="">
+                <div class="content">
+                    <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box" data-name="Complet Élite" data-price="14000">
+                <img src="./img.png/complet6.webp" alt="">
+                <div class="content">
+                    <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box" data-name="Robe Éclat" data-price="9500">
+                <img src="./img.png/vetement5.webp" alt="">
+                <div class="content">
+                    <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box" data-name="Robe Charme" data-price="8500">
+                <img src="./img.png/vetement3.webp" alt="">
+                <div class="content">
+                    <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a>
+                </div>
+            </div>
+
+            <div class="swiper-slide box" data-name="Robe Grâce" data-price="9000">
+                <img src="./img.png/vetement6.webp" alt="">
+                <div class="content">
+                    <a href="#" class="btn" data-i18n="news_add">Ajouter panier</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    <!--###################################-->
+    <!--products-->
+    <!--###################################-->
+
+    <section class="products-" id="products">
+        <div class="section-heading">
+        <h2 data-i18n="products_title">Nos<span>Produits</span></h2>
+    </div>
+
+    <div class="products-container">
+
+    <div class="products-box">
+        <img src="./img.png/vetement4.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_robe">Robe-Luxass</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>9000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+    <div class="products-box">
+        <img src="./img.png/complet5.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_elegance">Elégance-homme</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>9000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+    <div class="products-box">
+        <img src="./img.png/complet9.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_manche">Manche-longue</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>4000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+    <div class="products-box">
+        <img src="./img.png/vetement.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_robe">Robe-Luxass</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>9000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+    <div class="products-box">
+        <img src="./img.png/vetement7.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_robe">Robe-Luxass</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>9000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+    <div class="products-box">
+        <img src="./img.png/vetement2.webp" alt="">
+        <div class="products-box-content">
+            <h2 data-i18n="prod_robe">Robe-Luxass</h2>
+            <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <span>9000FCFA</span>
+            <i class='bx bxs-cart-alt'></i>
+        </div>
+    </div>
+
+</div>
+    <!--###################################-->
+    <!--reviews//avis-->
+    <!--###################################-->
+
+
+    <section class="reviews-" id="reviews">
+        <div class="section-heading">
+            <h2 data-i18n="reviews_title">Avis <span>Clients</span></h2>
+        </div>
+        <div class="reviews-container">
+
+            <div class="reviews-box">
+    <div class="reviews-box-inner">
+        <img src="./img.png/Avis1.jpg" alt="">
+        <div class="stars">
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+            <i class='bx bxs-star'></i>
+        </div>
+        <p data-i18n="review_1">👑 Devenez l'inspiration, pas l'imitation</p>
+        <h2>Charo</h2>
+    </div>
+</div>
+            <div class="reviews-box">
+                <img src="./img.png/Avis2.webp" alt="">
+                <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <p data-i18n="review_2">S'habiller, c'est déjà se sentir bien 😊</p>
+            <h2>Aigle</h2>
+            </div>
+            <div class="reviews-box">
+                <img src="./img.png/Avis3.webp" alt="">
+                <div class="stars">
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+                <i class='bx bxs-star'></i>
+            </div>
+            <p data-i18n="review_3">💪 Portez votre force, affirmez votre style ⚡</p>
+            <h2>Grace</h2>
+            </div>
+        </div>
+    </section>
+
+    <!--###################################-->
+    <!--A propos-->
+    <!--###################################-->
+
+    <section class="about-" id="about">
+        <div class="section-heading">
+            <h2 data-i18n="about_title">À <span>propos</span></h2>
+        </div>
+        <div class="about-content">
+            <p data-i18n="about_p1">E-SHOP est une boutique togolaise qui propose des vêtements tendance pour homme et femme, pensés pour allier style et confort au quotidien. Depuis notre atelier au Togo, nous sélectionnons chaque pièce avec soin pour vous offrir une expérience shopping fiable et agréable.</p>
+            <p data-i18n="about_p2">Notre mission : rendre la mode accessible à tous, avec un service client réactif et une livraison rapide dans toutes les régions du pays.</p>
+        </div>
+    </section>
+
+    <!--###################################-->
+    <!--Livraison-->
+    <!--###################################-->
+
+    <section class="shipping-" id="shipping">
+        <div class="section-heading">
+            <h2 data-i18n="shipping_title">Livraison <span>& Retours</span></h2>
+        </div>
+        <div class="shipping-container">
+            <div class="shipping-box">
+                <i class='bx bx-map'></i>
+                <h3 data-i18n="shipping_zones_title">Zones de livraison</h3>
+                <p data-i18n="shipping_zones_text">Nous livrons dans toutes les régions du Togo : Maritime, Plateaux, Centrale, Kara et Savanes.</p>
+            </div>
+            <div class="shipping-box">
+                <i class='bx bx-time-five'></i>
+                <h3 data-i18n="shipping_delay_title">Délais</h3>
+                <p data-i18n="shipping_delay_text">24h à Lomé, 2 à 4 jours ouvrés dans les autres régions selon la disponibilité.</p>
+            </div>
+            <div class="shipping-box">
+                <i class='bx bx-undo'></i>
+                <h3 data-i18n="shipping_return_title">Retours</h3>
+                <p data-i18n="shipping_return_text">Retour ou échange possible sous 7 jours si l'article n'a pas été porté, avec l'étiquette d'origine.</p>
+            </div>
+        </div>
+    </section>
+
+    <!--###################################-->
+    <!--FAQ-->
+    <!--###################################-->
+
+    <section class="faq-" id="faq">
+        <div class="section-heading">
+            <h2 data-i18n="faq_title">Questions <span>Fréquentes</span></h2>
+        </div>
+        <div class="faq-container">
+            <details class="faq-item">
+                <summary data-i18n="faq_q1">Quels sont les modes de paiement acceptés ?</summary>
+                <p data-i18n="faq_a1">Nous acceptons le paiement à la livraison, Mobile Money (T-Money, Flooz) et les cartes bancaires.</p>
+            </details>
+            <details class="faq-item">
+                <summary data-i18n="faq_q2">Combien coûte la livraison ?</summary>
+                <p data-i18n="faq_a2">Les frais varient selon la région ; le montant exact s'affiche avant la validation de votre commande.</p>
+            </details>
+            <details class="faq-item">
+                <summary data-i18n="faq_q3">Puis-je échanger un article qui ne me va pas ?</summary>
+                <p data-i18n="faq_a3">Oui, sous 7 jours après réception, l'article doit être non porté et dans son état d'origine.</p>
+            </details>
+            <details class="faq-item">
+                <summary data-i18n="faq_q4">Comment suivre ma commande ?</summary>
+                <p data-i18n="faq_a4">Un lien de suivi vous est envoyé par SMS ou e-mail dès l'expédition de votre colis.</p>
+            </details>
+        </div>
+    </section>
+
+    <!--###################################-->
+    <!--Contact-->
+    <!--###################################-->
+
+    <section class="contact-" id="contact">
+        <div class="section-heading">
+            <h2 data-i18n="contact_title">Nous <span>Contacter</span></h2>
+        </div>
+        <div class="contact-container">
+            <div class="contact-infos">
+                <p><i class='bx bx-map-pin'></i> <span data-i18n="contact_address">Lomé, Région Maritime, Togo</span></p>
+                <p><i class='bx bx-phone'></i> +228 90 98 46 31</p>
+                <p><i class='bx bx-envelope'></i> gracenyilimon@gmail.com</p>
+            </div>
+            <form class="contact-form">
+                <input type="text" placeholder="Votre nom" required data-i18n-placeholder="contact_name_ph">
+                <input type="email" placeholder="Votre e-mail" required data-i18n-placeholder="contact_email_ph">
+                <textarea placeholder="Votre message" rows="5" required data-i18n-placeholder="contact_msg_ph"></textarea>
+                <input type="submit" value="Envoyer" class="btn" data-i18n-value="contact_submit">
+            </form>
+        </div>
+    </section>
+
+    <!--###################################-->
+    <!--footer-->
+    <!--###################################-->
+<footer>
+    <div class="footer-box">
+        <h2>ESHOP</h2>
+        <div class="social">
+            <i class='bx bxl-facebook'></i>
+            <i class='bx bxl-instagram'></i>
+            <i class='bx bxl-whatsapp'></i>
+            <i class='bx bxl-tiktok'></i>
+            <i class='bx bxl-youtube'></i>
+        </div>
+    </div> 
+
+    <div class="footer-box">
+        <h2 data-i18n="footer_info">Information</h2>
+        <li><a href="#" data-i18n="footer_terms">Conditions de vente</a></li>
+        <li><a href="#" data-i18n="footer_legal">mentions légales</a></li>
+        <li><a href="#" data-i18n="footer_support">Supports</a></li>
+        <li><a href="#" data-i18n="footer_contact_link">Nous contacter</a></li>
+    </div>
+
+    <div class="footer-box">
+        <h2 data-i18n="footer_locations">Nos locaux</h2>
+        <li><a href="#">Maritime</a></li>
+        <li><a href="#">Plateaux</a></li>
+        <li><a href="#">Centrale</a></li>
+        <li><a href="#">Kara</a></li>
+        <li><a href="#">Savanes</a></li>
+    </div>
+
+    <div class="footer-box">
+        <h2 data-i18n="footer_payments">Paiements</h2>
+        <img src="./img.png/payement2.webp" alt="">
+        <img src="./img.png/payement3.webp" alt="">
+    </div>
+</footer>
+
+<div class="copy">
+    <p data-i18n="footer_copy">&copy; La Minute De Code - tous droits réservés - 2026 </p>
+</div>
+    
+
+    <script src="app.js"></script>
+<script src="products-api.js"></script>
+<script src="auth-api.js"></script>
+<script>
+    function checkAuthBeforePublish() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            alert('Vous devez etre connecte ou inscrit pour publier un produit.');
+            return false;
+        }
+        return true;
+    }
+</script>
+
+
+<script src="orders-api.js"></script>
+<script src="admin-api.js"></script>
+
+    
+<!-- Bouton WhatsApp -->
+
+<a href="https://wa.me/22890984631?text=Bonjour%20E-SHOP%2C%20je%20voudrais%20avoir%20des%20informations%20sur%20vos%20produits."
+class="whatsapp-btn"
+target="_blank"
+rel="noopener"
+aria-label="Contacter E-SHOP sur WhatsApp"> <i class='bx bxl-whatsapp'></i> </a>
+
+<!-- Bouton Appel -->
+
+<a href="tel:+22890984631"
+class="phone-btn"
+aria-label="Appeler E-SHOP"> <i class='bx bx-phone'></i> </a>
+
+    
+</body>
+</html>
